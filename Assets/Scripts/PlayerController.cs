@@ -83,6 +83,26 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             lm.UpdateCoins();
         }
+        if (other.gameObject.tag == "Limit")
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        GameManager.instance.lives -= 1;
+        lm.UpdateLives();
+        if (GameManager.instance.lives == 0)
+        {
+            lm.gameOverPanel.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        {
+            transform.position = lm.spawnPoint.position;
+            transform.rotation = lm.spawnPoint.rotation;
+        }
     }
     private void OnCollisionExit(Collision collision)
     {

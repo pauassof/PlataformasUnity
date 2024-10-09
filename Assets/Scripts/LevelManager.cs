@@ -12,6 +12,8 @@ public class LevelManager : MonoBehaviour
     private TextMeshProUGUI livesText;
     [SerializeField]
     private GameObject pausePanel;
+    public Transform spawnPoint;
+    public GameObject gameOverPanel;
 
 
     // Start is called before the first frame update
@@ -46,6 +48,14 @@ public class LevelManager : MonoBehaviour
     public void ReturnMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void Restart()
+    {
+        GameManager.instance.lives = 5;
+        GameManager.instance.totalCoins = 0;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public void UpdateCoins()

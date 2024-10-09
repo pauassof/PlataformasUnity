@@ -8,6 +8,8 @@ TagManager:
   - Destruible
   - Coin
   - DestruibleL
+  - Limit
+  - LimitEnemy
   layers:
   - Default
   - TransparentFX
@@ -15,8 +17,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - DetectionRadio
+  - EnemyLimits
   - 
   - 
   - 
