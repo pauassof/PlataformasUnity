@@ -26,7 +26,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            if(collision.GetContact(0).normal.y <= -0.5f)
+            bool playerInvencible = collision.gameObject.GetComponent<PlayerController>().invencible;
+            if(collision.GetContact(0).normal.y <= -0.5f || playerInvencible == true)
             {
                 Destroy(gameObject);
             }

@@ -13,9 +13,14 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     [SerializeField]
     private GameObject tochosRotos;
-    [SerializeField]
-    private GameObject luckysRotos;
     private LevelManager lm;
+    public bool invencible;
+    [SerializeField]
+    private float powerupTime;
+    [SerializeField]
+    private GameObject[] powerUpsPreFabs;
+    [SerializeField]
+    private GameObject tochoDuroPreFab;
 
     private void Start()
     {
@@ -46,6 +51,15 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Plataform")
+        {
+            transform.parent = collision.transform;
+            isGrounded = true;
+        }
         if (collision.gameObject.tag == "Destruible")
         {
             if (collision.GetContact(0).normal == Vector3.down)
@@ -63,30 +77,63 @@ public class PlayerController : MonoBehaviour
         {
             if (collision.GetContact(0).normal == Vector3.down)
             {
-                GameObject clone = Instantiate(luckysRotos, collision.transform.position, collision.transform.rotation);
+                int azar = Random.Range(0, powerUpsPreFabs.Length);
+                GameObject clone = Instantiate(powerUpsPreFabs[azar], collision.transform.position, Quaternion.identity );
+                StartCoroutine(PowerUpAnim(clone.transform));
+                Instantiate(tochoDuroPreFab, collision.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-                Destroy(clone, 5f);
             }
-            
+
             else if (collision.GetContact(0).normal == Vector3.up)
             {
                 isGrounded = true;
             }
         }
-
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Coin")
+        switch (other.gameObject.tag)
         {
-            GameManager.instance.totalCoins += 1;
-            Destroy(other.gameObject);
-            lm.UpdateCoins();
+            case "Coin":
+                GameManager.instance.totalCoins += 1;
+                Destroy(other.gameObject);
+                lm.UpdateCoins();
+                break;
+            case "Limit":
+                Death();
+                break;
+            case "Finish":
+                lm.FinishLevel();
+                break;
+            case "Vida":
+                GameManager.instance.lives += 1;
+                lm.UpdateLives();
+                Destroy(other.gameObject);
+                break;
+            case "Estrella":
+                invencible = true;
+                Invoke("FinishInvencible", powerupTime);
+                Destroy(other.gameObject);
+                break;
+            case "Jump":
+                jumpForce *= 1.5f;
+                Invoke("FinishJump", powerupTime);
+                Destroy(other.gameObject);
+                break;
+            default: 
+                break;
+
         }
-        if (other.gameObject.tag == "Limit")
-        {
-            Death();
-        }
+        
+    }
+    private void FinishInvencible()
+    {
+        invencible = false;
+    }
+
+    private void FinishJump()
+    {
+        jumpForce /= 1.5f;
     }
 
     public void Death()
@@ -104,10 +151,29 @@ public class PlayerController : MonoBehaviour
             transform.rotation = lm.spawnPoint.rotation;
         }
     }
+
+    IEnumerator PowerUpAnim(Transform transPowerUp)
+    {
+        Vector3 initialPos = transPowerUp.position;
+        Vector3 finalPos = transPowerUp.position + Vector3.up;
+        float t = 0;
+
+        while (t<1) 
+        {
+            t += Time.deltaTime*1.5f;
+            transPowerUp.position = Vector3.Lerp(initialPos, finalPos, t);
+            yield return null;
+        }
+    }
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
+            isGrounded = false;
+        }
+        if (collision.gameObject.tag == "Plataform")
+        {
+            transform.parent = null;
             isGrounded = false;
         }
     }

@@ -14,6 +14,9 @@ public class LevelManager : MonoBehaviour
     private GameObject pausePanel;
     public Transform spawnPoint;
     public GameObject gameOverPanel;
+    [SerializeField]
+    private GameObject panelWin;
+    private PlayerController player;
 
 
     // Start is called before the first frame update
@@ -21,6 +24,7 @@ public class LevelManager : MonoBehaviour
     {
         UpdateCoins();
         UpdateLives();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -66,5 +70,17 @@ public class LevelManager : MonoBehaviour
     public void UpdateLives()
     {
         livesText.text = GameManager.instance.lives.ToString();
+    }
+
+    public void FinishLevel()
+    {
+        player.enabled = false;
+        panelWin.SetActive(true);
+        Invoke("NextLevel", 4);
+    }
+    void NextLevel()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
