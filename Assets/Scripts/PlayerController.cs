@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     private GameObject[] powerUpsPreFabs;
     [SerializeField]
     private GameObject tochoDuroPreFab;
+    [SerializeField]
+    private Transform spawn;
 
     private void Start()
     {
@@ -119,6 +121,10 @@ public class PlayerController : MonoBehaviour
                 jumpForce *= 1.5f;
                 Invoke("FinishJump", powerupTime);
                 Destroy(other.gameObject);
+                break;
+            case "Spawn":
+                lm.spawnPoint.position = spawn.position;
+                lm.spawnPoint.rotation = spawn.rotation;
                 break;
             default: 
                 break;

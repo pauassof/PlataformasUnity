@@ -60,6 +60,8 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.totalCoins = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
+        transform.position = spawnPoint.position;
+        transform.rotation = spawnPoint.rotation;
     }
 
     public void UpdateCoins()
