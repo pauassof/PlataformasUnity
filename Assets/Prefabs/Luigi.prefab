@@ -210,8 +210,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpForce: 350
+  jumpForce: 450
   tochosRotos: {fileID: 4667316183083973828, guid: 2eac117e2a4a93248b0ca1bc42ab4b85, type: 3}
+  invencible: 0
+  powerupTime: 0
+  powerUpsPreFabs: []
+  tochoDuroPreFab: {fileID: 0}
+  spawn: {fileID: 0}
 --- !u!54 &6350045447863664608
 Rigidbody:
   m_ObjectHideFlags: 0
