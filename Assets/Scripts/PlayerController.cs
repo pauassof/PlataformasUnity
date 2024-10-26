@@ -182,6 +182,14 @@ public class PlayerController : MonoBehaviour
             transform.parent = null;
             isGrounded = false;
         }
+        if (collision.gameObject.tag == "Destruible")
+        {
+            isGrounded = false;
+        }
+        if (collision.gameObject.tag == "DestruibleL")
+        {
+            isGrounded = false;
+        }
     }
 
 }
