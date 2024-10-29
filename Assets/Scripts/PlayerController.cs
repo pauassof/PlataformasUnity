@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jumpForce;
     private Rigidbody rb;
+    [SerializeField]
     private bool isGrounded;
     [SerializeField]
     private GameObject tochosRotos;
@@ -53,15 +54,6 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Plataform")
-        {
-            transform.parent = collision.transform;
-            isGrounded = true;
-        }
         if (collision.gameObject.tag == "Destruible")
         {
             if (collision.GetContact(0).normal == Vector3.down)
@@ -75,6 +67,16 @@ public class PlayerController : MonoBehaviour
                 isGrounded = true;
             }
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Plataform")
+        {
+            transform.parent = collision.transform;
+            isGrounded = true;
+        }
+        
         if (collision.gameObject.tag == "DestruibleL")
         {
             if (collision.GetContact(0).normal == Vector3.down)

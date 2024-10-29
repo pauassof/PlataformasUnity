@@ -2,36 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planta_Piraña : Enemy
+public class Planta_Piraña : MonoBehaviour
 {
     [SerializeField]
-    private float timeToReturnDown;
-    private float initialYPos;
-    private float _speed;
+    private Transform target;
+    [SerializeField]
+    private float speed;
 
     // Start is called before the first frame update
     void Start()
     {
-        initialYPos = transform.position.y;
-        _speed = speed;
+        if (target != null)
+        {
+            target.parent = null;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerNear == true)
+        if (target != null)
         {
-            transform.Translate(Vector3.up * _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-       
-    }
-
-    private void ReturnDown()
-    {
-        
-    }
 }
